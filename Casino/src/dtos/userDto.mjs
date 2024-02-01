@@ -1,4 +1,4 @@
-class UserDTO{
+class userDto{
     constructor(email, isAdult, password){
         this.email = email;
         this.isAdult = isAdult;
@@ -6,4 +6,4 @@ class UserDTO{
     }
 }
 
-export default UserDTO;
+export default userDto;
