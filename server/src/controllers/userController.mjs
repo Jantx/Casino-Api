@@ -31,12 +31,35 @@ export const getUserById = async (req, res) =>{
 
 
     try {
-        const rows = await queryAsync("SELECT * FROM usuarios Where id = ?", [id]);
+        const rows = await queryAsync("SELECT * FROM usuarios WHERE id = ?", [id]);
         res.json(rows[0]);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });
     }
+}
+
+export const authUser = async (req, res) =>{
+    
+    const{email, password} = req.body;
+    const errors = validationResult(req);
+    const query = `
+        SELECT COUNT(*) as cantidad_usuarios
+        FROM usuarios
+        WHERE email = ? AND contraseña = ?;
+    `;
+    if (!errors.isEmpty()) {
+        return res.status(400).json({errors: errors.array()});
+    }
+
+    try {
+        const rows = await queryAsync(query,[email,password]);
+        res.json(rows[0]);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+
 }
 
 const queryAsync = (query, params = []) => {

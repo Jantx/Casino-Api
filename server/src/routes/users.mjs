@@ -1,7 +1,7 @@
 import mysqlConnection from "../database/connection.mjs";
 import  express  from "express";
 export const usersRouter = express.Router();
-import { getAllUsers, getUserById, createUser, updateUser, deleteUser } from "../controllers/userController.mjs";
+import { getAllUsers, getUserById, createUser, updateUser, deleteUser, authUser } from "../controllers/userController.mjs";
 
 //METHODS GET
 usersRouter.get('/', async(req, res) =>{
@@ -23,6 +23,7 @@ usersRouter.get('/:id', async(req, res)=>{
      }    
 });
 
+
 //METHODS POST
 
 usersRouter.post('/', async(req, res)=>{
@@ -31,6 +32,15 @@ usersRouter.post('/', async(req, res)=>{
     } catch (error) {
         console.error(error);
          res.status(500).json({error: 'Servel internal error'})       
+    }
+})
+
+usersRouter.post('/auth-user', async(req,res)=>{
+    try {
+        await authUser(req,res);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error: 'Servel internal error'})
     }
 })
 
